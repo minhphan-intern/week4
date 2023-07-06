@@ -1,0 +1,7 @@
+### create network for odoo
+
+### run the db
+docker run --name db -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e -e POSTGRES_DB=postgres --network=odoo -t postgres:13
+
+### run the Image
+docker run --name odoo1 -p 8069:8069 --link db:db --network=odoo -t odoo:v1
