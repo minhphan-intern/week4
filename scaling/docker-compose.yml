@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    restart: always
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
+    depends_on:
+      - api
+      - httpd
+    links:
+      - api:api
+    ports:
+      - '3001:88'
+      - '3002:80'
+    restart: always
+  httpd:
+    image: httpd
+    ports:
+      - '99:80'
+
