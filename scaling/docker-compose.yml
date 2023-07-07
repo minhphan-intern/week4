@@ -4,9 +4,11 @@ services:
   api:
     build:
       dockerfile: Dockerfile
-    ports:
-      - 3000:3000
+    # ports:
+    #   - 3000:3000
     restart: always
+    deploy:
+      replicas: 3
   nginx:
     image: nginx:latest
     volumes:
@@ -14,8 +16,6 @@ services:
     depends_on:
       - api
       - httpd
-    links:
-      - api:api
     ports:
       - '3001:88'
       - '3002:80'

@@ -7,17 +7,25 @@ services:
       - '5555:5432'
     volumes:
       - ./data/:/docker-entrypoint-initdb.d/
+      - ./postgres_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=password
       - POSTGRES_HOST_AUTH_METHOD=trust
-    restart: always
+    tty: true
+    restart: unless-stopped
   srv:
     build:
       context: .
       dockerfile: odoo.Dockerfile
+    links:
+      - db:db
     depends_on:
       - db
     restart: always
+    volumes:
+      - ./odoo_data:/opt/odoo/.local/share/Odoo
+    deploy:
+      replicas: 3
   proxy:
     image: nginx
     depends_on:
